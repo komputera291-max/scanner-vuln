@@ -1,0 +1,22 @@
+# WAF Bypass Technique Rules
+# Format: technique:description
+case_mutation:Mix uppercase and lowercase letters
+comment_injection:Insert /**/ into SQL keywords
+double_encoding:Double URL encode payload
+unicode_escape:Use unicode escapes for characters
+null_byte:Inject null byte before extension
+parameter_pollution:Split payload across multiple params
+chunked_encoding:Use HTTP chunked transfer encoding
+base64_wrapping:Wrap payload in base64 decode
+eval_wrapping:Wrap payload in eval() call
+concat_bypass:Split keywords with concatenation
+hex_escape:Use hex escapes for characters
+html_entity:Use HTML entities for special chars
+mixed_encoding:Combine multiple encoding methods
+whiteSpace_tab:Replace spaces with tabs
+whiteSpace_newline:Replace spaces with newlines
+operator_alternation:Swap operators (OR->||, AND->&&)
+quote_alternation:Alternate between quote types
+polyglot:Create multi-vulnerability payloads
+time_delay:Add time delays for blind detection
+boundary_injection:Inject at string boundaries

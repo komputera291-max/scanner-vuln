@@ -1,0 +1,1212 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Scan Report - https://www.kimi.com</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background: #000; color: #e0e0e0; padding: 24px; }
+.container { max-width: 1280px; margin: 0 auto; }
+
+/* Header */
+.header { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 16px; padding: 36px 32px; margin-bottom: 28px; }
+.header h1 { color: #ffffff; font-size: 30px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+.header .sub { color: #666; font-size: 13px; margin-bottom: 8px; }
+.header .badge { display: inline-block; background: #111; border: 1px solid #222; border-radius: 6px; padding: 4px 12px; font-size: 12px; color: #888; margin-right: 8px; margin-top: 8px; }
+.header .badge span { color: #fff; }
+
+/* Summary Grid */
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
+.summary-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 24px; text-align: center; transition: border-color .2s; }
+.summary-card:hover { border-color: #333; }
+.summary-card .num { font-size: 38px; font-weight: 800; margin-bottom: 4px; letter-spacing: -1px; }
+.summary-card .lbl { color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.sc-critical .num { color: #ff002b; }
+.sc-high .num { color: #ff4d00; }
+.sc-medium .num { color: #ffaa00; }
+.sc-low .num { color: #00bfff; }
+.sc-info .num { color: #00ff88; }
+.sc-total .num { color: #ffffff; }
+
+/* Severity Sections */
+.severity-section { margin-bottom: 28px; }
+.severity-header { font-size: 18px; font-weight: 700; padding: 14px 20px; border-radius: 10px; margin-bottom: 12px; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+.severity-header .count { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2px 12px; font-size: 13px; font-weight: 600; }
+.sh-critical { background: #1a0508; color: #ff002b; border-left: 3px solid #ff002b; }
+.sh-high { background: #1a0a05; color: #ff4d00; border-left: 3px solid #ff4d00; }
+.sh-medium { background: #1a1200; color: #ffaa00; border-left: 3px solid #ffaa00; }
+.sh-low { background: #000a1a; color: #00bfff; border-left: 3px solid #00bfff; }
+.sh-info { background: #001a0a; color: #00ff88; border-left: 3px solid #00ff88; }
+
+/* Vuln Cards */
+.vuln-card { background: #080808; border: 1px solid #161616; border-radius: 12px; padding: 22px; margin-bottom: 10px; }
+.vuln-card h3 { color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
+.vuln-card .desc { color: #888; font-size: 13px; margin-bottom: 14px; line-height: 1.5; }
+.vuln-card .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.vuln-card .mi { font-size: 12px; color: #999; }
+.vuln-card .mi strong { color: #555; font-weight: 500; }
+.vuln-card .mi code { background: #111; color: #aaa; padding: 1px 6px; border-radius: 3px; font-size: 11px; }
+.vuln-card .payload-box { background: #0d0000; border: 1px solid #2a0000; border-radius: 8px; padding: 14px; margin: 10px 0; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.7; overflow-x: auto; color: #ff6b6b; }
+.vuln-card .payload-box::before { content: "Payload"; display: block; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; color: #882222; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.vuln-card .impact-box { background: #000d08; border: 1px solid #002018; border-radius: 8px; padding: 14px; margin: 10px 0; font-size: 13px; line-height: 1.6; color: #88ddbb; }
+.vuln-card .impact-box::before { content: "Impact"; display: block; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; color: #226655; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.vuln-card .evidence { background: #050505; border: 1px solid #151515; border-radius: 6px; padding: 12px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; line-height: 1.6; overflow-x: auto; margin-top: 10px; color: #bbb; }
+.vuln-card .remediation { background: #001005; border: 1px solid #002010; border-radius: 6px; padding: 12px; margin-top: 10px; color: #00cc77; font-size: 13px; line-height: 1.5; }
+.vuln-card .remediation::before { content: "Remediation: "; font-weight: 600; }
+
+/* None found */
+.none-found { color: #444; font-style: italic; padding: 28px; text-align: center; font-size: 14px; background: #080808; border: 1px dashed #1a1a1a; border-radius: 10px; }
+
+/* Footer */
+.footer { text-align: center; color: #333; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #111; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  body { padding: 12px; }
+  .vuln-card .meta { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+}
+</style></head><body>
+<div class="container">
+<div class="header">
+<h1>Security Scan Report</h1>
+<div class="sub">Target: https://www.kimi.com &middot; Scan ID: scan_1780165672</div>
+<div class="sub">Date: 2026-05-31 01:27:52 &middot; Duration: 50.1s &middot; Requests: 18</div>
+<div class="badge">Modules: <span>18</span></div>
+<div class="badge">Vulnerabilities: <span>74</span></div>
+</div>
+<div class="summary-grid">
+<div class="summary-card sc-total"><div class="num">74</div><div class="lbl">Total</div></div>
+<div class="summary-card sc-critical"><div class="num">59</div><div class="lbl">Critical</div></div>
+<div class="summary-card sc-high"><div class="num">0</div><div class="lbl">High</div></div>
+<div class="summary-card sc-medium"><div class="num">6</div><div class="lbl">Medium</div></div>
+<div class="summary-card sc-low"><div class="num">8</div><div class="lbl">Low</div></div>
+<div class="summary-card sc-info"><div class="num">1</div><div class="lbl">Info</div></div>
+</div>
+<div class="severity-section"><div class="severity-header sh-critical">
+CRITICAL <span class="count">59</span></div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.env</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.env</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.env</div>
+<div class="mi"><strong>Parameter:</strong> /.env</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.env. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.git/config</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.git/config</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.git/config</div>
+<div class="mi"><strong>Parameter:</strong> /.git/config</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.git/config. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.gitignore</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.gitignore</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.gitignore</div>
+<div class="mi"><strong>Parameter:</strong> /.gitignore</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.gitignore. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.htaccess</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.htaccess</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.htaccess</div>
+<div class="mi"><strong>Parameter:</strong> /.htaccess</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.htaccess. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /config.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /config.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/config.php</div>
+<div class="mi"><strong>Parameter:</strong> /config.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /config.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /config.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /config.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/config.json</div>
+<div class="mi"><strong>Parameter:</strong> /config.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /config.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /config.yaml</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /config.yaml</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/config.yaml</div>
+<div class="mi"><strong>Parameter:</strong> /config.yaml</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /config.yaml. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /config.yml</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /config.yml</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/config.yml</div>
+<div class="mi"><strong>Parameter:</strong> /config.yml</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /config.yml. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /configuration.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /configuration.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/configuration.php</div>
+<div class="mi"><strong>Parameter:</strong> /configuration.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /configuration.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /database.yml</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /database.yml</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/database.yml</div>
+<div class="mi"><strong>Parameter:</strong> /database.yml</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /database.yml. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /db.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /db.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/db.php</div>
+<div class="mi"><strong>Parameter:</strong> /db.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /db.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /backup.sql</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /backup.sql</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/backup.sql</div>
+<div class="mi"><strong>Parameter:</strong> /backup.sql</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Attacker can extract, modify, or delete entire database contents, bypass authentication, execute remote commands, and gain full server access.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /backup.sql. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /dump.sql</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /dump.sql</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/dump.sql</div>
+<div class="mi"><strong>Parameter:</strong> /dump.sql</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Attacker can extract, modify, or delete entire database contents, bypass authentication, execute remote commands, and gain full server access.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /dump.sql. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /dump.rdb</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /dump.rdb</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/dump.rdb</div>
+<div class="mi"><strong>Parameter:</strong> /dump.rdb</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /dump.rdb. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /crossdomain.xml</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /crossdomain.xml</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/crossdomain.xml</div>
+<div class="mi"><strong>Parameter:</strong> /crossdomain.xml</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /crossdomain.xml. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /clientaccesspolicy.xml</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /clientaccesspolicy.xml</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/clientaccesspolicy.xml</div>
+<div class="mi"><strong>Parameter:</strong> /clientaccesspolicy.xml</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /clientaccesspolicy.xml. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /wp-config.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /wp-config.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/wp-config.php</div>
+<div class="mi"><strong>Parameter:</strong> /wp-config.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /wp-config.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /wp-config.php.bak</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /wp-config.php.bak</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/wp-config.php.bak</div>
+<div class="mi"><strong>Parameter:</strong> /wp-config.php.bak</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /wp-config.php.bak. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /wp-config.php.old</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /wp-config.php.old</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/wp-config.php.old</div>
+<div class="mi"><strong>Parameter:</strong> /wp-config.php.old</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /wp-config.php.old. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /web.config</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /web.config</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/web.config</div>
+<div class="mi"><strong>Parameter:</strong> /web.config</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /web.config. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /app.config</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /app.config</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/app.config</div>
+<div class="mi"><strong>Parameter:</strong> /app.config</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /app.config. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /application.properties</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /application.properties</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/application.properties</div>
+<div class="mi"><strong>Parameter:</strong> /application.properties</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /application.properties. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /docker-compose.yml</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /docker-compose.yml</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/docker-compose.yml</div>
+<div class="mi"><strong>Parameter:</strong> /docker-compose.yml</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /docker-compose.yml. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /Dockerfile</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /Dockerfile</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/Dockerfile</div>
+<div class="mi"><strong>Parameter:</strong> /Dockerfile</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /Dockerfile. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /kubeconfig</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /kubeconfig</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/kubeconfig</div>
+<div class="mi"><strong>Parameter:</strong> /kubeconfig</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /kubeconfig. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.kube/config</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.kube/config</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.kube/config</div>
+<div class="mi"><strong>Parameter:</strong> /.kube/config</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.kube/config. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /composer.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /composer.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/composer.json</div>
+<div class="mi"><strong>Parameter:</strong> /composer.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /composer.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /composer.lock</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /composer.lock</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/composer.lock</div>
+<div class="mi"><strong>Parameter:</strong> /composer.lock</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /composer.lock. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /package.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /package.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/package.json</div>
+<div class="mi"><strong>Parameter:</strong> /package.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /package.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /yarn.lock</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /yarn.lock</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/yarn.lock</div>
+<div class="mi"><strong>Parameter:</strong> /yarn.lock</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /yarn.lock. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /npm-debug.log</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /npm-debug.log</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/npm-debug.log</div>
+<div class="mi"><strong>Parameter:</strong> /npm-debug.log</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /npm-debug.log. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /debug.log</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /debug.log</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/debug.log</div>
+<div class="mi"><strong>Parameter:</strong> /debug.log</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /debug.log. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /error.log</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /error.log</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/error.log</div>
+<div class="mi"><strong>Parameter:</strong> /error.log</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /error.log. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /access.log</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /access.log</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/access.log</div>
+<div class="mi"><strong>Parameter:</strong> /access.log</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /access.log. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /credentials</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /credentials</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/credentials</div>
+<div class="mi"><strong>Parameter:</strong> /credentials</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /credentials. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /credentials.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /credentials.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/credentials.json</div>
+<div class="mi"><strong>Parameter:</strong> /credentials.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /credentials.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /key.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /key.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/key.json</div>
+<div class="mi"><strong>Parameter:</strong> /key.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /key.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /service-account.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /service-account.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/service-account.json</div>
+<div class="mi"><strong>Parameter:</strong> /service-account.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /service-account.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /phpinfo.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /phpinfo.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/phpinfo.php</div>
+<div class="mi"><strong>Parameter:</strong> /phpinfo.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /phpinfo.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /info.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /info.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/info.php</div>
+<div class="mi"><strong>Parameter:</strong> /info.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /info.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /test.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /test.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/test.php</div>
+<div class="mi"><strong>Parameter:</strong> /test.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /test.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /admin.php</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /admin.php</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/admin.php</div>
+<div class="mi"><strong>Parameter:</strong> /admin.php</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /admin.php. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /swagger-ui.html</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /swagger-ui.html</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/swagger-ui.html</div>
+<div class="mi"><strong>Parameter:</strong> /swagger-ui.html</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /swagger-ui.html. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.aws/credentials</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.aws/credentials</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.aws/credentials</div>
+<div class="mi"><strong>Parameter:</strong> /.aws/credentials</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.aws/credentials. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.aws/config</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.aws/config</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.aws/config</div>
+<div class="mi"><strong>Parameter:</strong> /.aws/config</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.aws/config. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.azure/credentials</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.azure/credentials</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.azure/credentials</div>
+<div class="mi"><strong>Parameter:</strong> /.azure/credentials</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /.azure/credentials. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.npmrc</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.npmrc</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.npmrc</div>
+<div class="mi"><strong>Parameter:</strong> /.npmrc</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /.npmrc. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.dockercfg</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.dockercfg</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.dockercfg</div>
+<div class="mi"><strong>Parameter:</strong> /.dockercfg</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /.dockercfg. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /.docker/config.json</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /.docker/config.json</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/.docker/config.json</div>
+<div class="mi"><strong>Parameter:</strong> /.docker/config.json</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /.docker/config.json. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /server-status</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /server-status</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/server-status</div>
+<div class="mi"><strong>Parameter:</strong> /server-status</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /server-status. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /server-info</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /server-info</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/server-info</div>
+<div class="mi"><strong>Parameter:</strong> /server-info</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /server-info. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /status</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /status</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/status</div>
+<div class="mi"><strong>Parameter:</strong> /status</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /status. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /health</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /health</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/health</div>
+<div class="mi"><strong>Parameter:</strong> /health</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /health. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /actuator</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /actuator</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/actuator</div>
+<div class="mi"><strong>Parameter:</strong> /actuator</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /actuator. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /actuator/info</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /actuator/info</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/actuator/info</div>
+<div class="mi"><strong>Parameter:</strong> /actuator/info</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /actuator/info. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /actuator/health</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /actuator/health</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/actuator/health</div>
+<div class="mi"><strong>Parameter:</strong> /actuator/health</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (53554 bytes)</div>
+<div class="remediation">Restrict access to /actuator/health. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /graphql</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /graphql</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/graphql</div>
+<div class="mi"><strong>Parameter:</strong> /graphql</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /graphql. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /graphiql</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /graphiql</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/graphiql</div>
+<div class="mi"><strong>Parameter:</strong> /graphiql</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /graphiql. Remove from production or add authentication.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Endpoint Exposed - /voyager</h3>
+<div class="desc">Sensitive configuration endpoint exposed: /voyager</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/voyager</div>
+<div class="mi"><strong>Parameter:</strong> /voyager</div>
+<div class="mi"><strong>CVSS:</strong> 9.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Endpoint accessible, contains sensitive-looking data (52508 bytes)</div>
+<div class="remediation">Restrict access to /voyager. Remove from production or add authentication.</div>
+</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-high">
+HIGH <span class="count">0</span></div>
+<div class="none-found">No vulnerabilities found</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-medium">
+MEDIUM <span class="count">6</span></div>
+<div class="vuln-card">
+<h3>Weak TLS Protocol - TLSv1.0</h3>
+<div class="desc">Server supports deprecated TLSv1.0 protocol</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> TLS Version</div>
+<div class="mi"><strong>CVSS:</strong> 6.0</div>
+<div class="mi"><strong>Confidence:</strong> 95%</div>
+<div class="mi"><strong>Module:</strong> ssl</div>
+</div>
+<div class="payload-box">TLSv1.0</div>
+<div class="impact-box">Weak SSL/TLS configuration allows man-in-the-middle attacks, data interception, and credential theft.</div>
+<div class="evidence">TLSv1.0 connection succeeded</div>
+<div class="remediation">Disable TLSv1.0 on server. Use TLS 1.2 or TLS 1.3.</div>
+</div>
+<div class="vuln-card">
+<h3>Weak TLS Protocol - TLSv1.1</h3>
+<div class="desc">Server supports deprecated TLSv1.1 protocol</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> TLS Version</div>
+<div class="mi"><strong>CVSS:</strong> 6.0</div>
+<div class="mi"><strong>Confidence:</strong> 95%</div>
+<div class="mi"><strong>Module:</strong> ssl</div>
+</div>
+<div class="payload-box">TLSv1.1</div>
+<div class="impact-box">Weak SSL/TLS configuration allows man-in-the-middle attacks, data interception, and credential theft.</div>
+<div class="evidence">TLSv1.1 connection succeeded</div>
+<div class="remediation">Disable TLSv1.1 on server. Use TLS 1.2 or TLS 1.3.</div>
+</div>
+<div class="vuln-card">
+<h3>Cookie Security - SameSite=None</h3>
+<div class="desc">Cookie '__cf_bm': Cookie sent on cross-site requests</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> Set-Cookie: __cf_bm</div>
+<div class="mi"><strong>CVSS:</strong> 5.5</div>
+<div class="mi"><strong>Confidence:</strong> 95%</div>
+<div class="mi"><strong>Module:</strong> cookie</div>
+</div>
+<div class="payload-box">Set-Cookie: __cf_bm=LIf89YbYCTiRh5RqfkRReFFFpSikrBf7yeuOiFHw1qQ-1780165673.2875037-1.0.1.1-LiADoWRIGP0rZPInZo5tI</div>
+<div class="impact-box">Insecure cookies can be stolen via XSS, intercepted over HTTP, or manipulated, leading to session hijacking.</div>
+<div class="evidence">Cookie flags: httponly, samesite=none, secure, path=/, domain=kimi.com, expires=sat, 30 may 2026 18:57:53 gmt</div>
+<div class="remediation">Set the missing flag on cookie '__cf_bm'.</div>
+</div>
+<div class="vuln-card">
+<h3>Missing CSP Header</h3>
+<div class="desc">Content-Security-Policy header is missing. Site is vulnerable to XSS attacks.</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> Content-Security-Policy</div>
+<div class="mi"><strong>CVSS:</strong> 5.0</div>
+<div class="mi"><strong>Confidence:</strong> 100%</div>
+<div class="mi"><strong>Module:</strong> headers</div>
+</div>
+<div class="payload-box">Missing</div>
+<div class="impact-box">Missing security headers expose users to clickjacking, MIME-type sniffing, and other client-side attacks.</div>
+<div class="evidence">CSP header not present in response</div>
+<div class="remediation">Implement Content-Security-Policy header with appropriate directives.</div>
+</div>
+<div class="vuln-card">
+<h3>Missing X-Frame-Options Header</h3>
+<div class="desc">X-Frame-Options header is missing. Site is vulnerable to clickjacking attacks.</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> X-Frame-Options</div>
+<div class="mi"><strong>CVSS:</strong> 4.3</div>
+<div class="mi"><strong>Confidence:</strong> 100%</div>
+<div class="mi"><strong>Module:</strong> headers</div>
+</div>
+<div class="payload-box">Missing</div>
+<div class="impact-box">Missing security headers expose users to clickjacking, MIME-type sniffing, and other client-side attacks.</div>
+<div class="evidence">X-Frame-Options header not present</div>
+<div class="remediation">Add 'X-Frame-Options: DENY' or 'X-Frame-Options: SAMEORIGIN' header.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Data Exposure - Phone Number</h3>
+<div class="desc">Sensitive data (Phone Number) exposed in web page content</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> HTML Content</div>
+<div class="mi"><strong>CVSS:</strong> 5.5</div>
+<div class="mi"><strong>Confidence:</strong> 85%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">0 1024 1024</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Pattern: \b(?:\+?[0-9]{1,3}[-. ]?)?\(?[...</div>
+<div class="remediation">Remove sensitive data from client-side code. Use environment variables. Implement proper secrets management.</div>
+</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-low">
+LOW <span class="count">8</span></div>
+<div class="vuln-card">
+<h3>Missing X-XSS-Protection Header</h3>
+<div class="desc">X-XSS-Protection header is missing</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> X-XSS-Protection</div>
+<div class="mi"><strong>CVSS:</strong> 2.5</div>
+<div class="mi"><strong>Confidence:</strong> 80%</div>
+<div class="mi"><strong>Module:</strong> headers</div>
+</div>
+<div class="payload-box">Missing</div>
+<div class="impact-box">Missing security headers expose users to clickjacking, MIME-type sniffing, and other client-side attacks.</div>
+<div class="evidence">X-XSS-Protection header not present</div>
+<div class="remediation">Add 'X-XSS-Protection: 1; mode=block' header.</div>
+</div>
+<div class="vuln-card">
+<h3>Missing X-Content-Type-Options Header</h3>
+<div class="desc">X-Content-Type-Options header is missing. Site is vulnerable to MIME-type sniffing attacks.</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> X-Content-Type-Options</div>
+<div class="mi"><strong>CVSS:</strong> 2.5</div>
+<div class="mi"><strong>Confidence:</strong> 100%</div>
+<div class="mi"><strong>Module:</strong> headers</div>
+</div>
+<div class="payload-box">Missing</div>
+<div class="impact-box">Missing security headers expose users to clickjacking, MIME-type sniffing, and other client-side attacks.</div>
+<div class="evidence">X-Content-Type-Options header not present</div>
+<div class="remediation">Add 'X-Content-Type-Options: nosniff' header.</div>
+</div>
+<div class="vuln-card">
+<h3>Missing Referrer-Policy Header</h3>
+<div class="desc">Referrer-Policy header is missing. Referrer information may leak.</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> Referrer-Policy</div>
+<div class="mi"><strong>CVSS:</strong> 2.0</div>
+<div class="mi"><strong>Confidence:</strong> 90%</div>
+<div class="mi"><strong>Module:</strong> headers</div>
+</div>
+<div class="payload-box">Missing</div>
+<div class="impact-box">Missing security headers expose users to clickjacking, MIME-type sniffing, and other client-side attacks.</div>
+<div class="evidence">Referrer-Policy header not present</div>
+<div class="remediation">Add 'Referrer-Policy: strict-origin-when-cross-origin' or similar.</div>
+</div>
+<div class="vuln-card">
+<h3>Server Information Disclosure</h3>
+<div class="desc">Server header discloses version information: 'cloudflare'</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> Server</div>
+<div class="mi"><strong>CVSS:</strong> 2.5</div>
+<div class="mi"><strong>Confidence:</strong> 100%</div>
+<div class="mi"><strong>Module:</strong> server</div>
+</div>
+<div class="payload-box">cloudflare</div>
+<div class="impact-box">Server information disclosure aids attackers in crafting targeted exploits by revealing software versions and configurations.</div>
+<div class="evidence">Server: cloudflare</div>
+<div class="remediation">Hide or obfuscate server version in headers. Use generic server names.</div>
+</div>
+<div class="vuln-card">
+<h3>Technology Disclosure - x-powered-by</h3>
+<div class="desc">Header 'x-powered-by' discloses: 'Express'</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> x-powered-by</div>
+<div class="mi"><strong>CVSS:</strong> 2.0</div>
+<div class="mi"><strong>Confidence:</strong> 100%</div>
+<div class="mi"><strong>Module:</strong> server</div>
+</div>
+<div class="payload-box">Express</div>
+<div class="impact-box">Server information disclosure aids attackers in crafting targeted exploits by revealing software versions and configurations.</div>
+<div class="evidence">x-powered-by: Express</div>
+<div class="remediation">Remove or obfuscate technology-specific headers.</div>
+</div>
+<div class="vuln-card">
+<h3>Error Page Information Disclosure</h3>
+<div class="desc">Custom error page or information leak on /nonexistent-page-test-12345</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com/nonexistent-page-test-12345</div>
+<div class="mi"><strong>Parameter:</strong> /nonexistent-page-test-12345</div>
+<div class="mi"><strong>CVSS:</strong> 2.5</div>
+<div class="mi"><strong>Confidence:</strong> 70%</div>
+<div class="mi"><strong>Module:</strong> server</div>
+</div>
+<div class="payload-box">N/A</div>
+<div class="impact-box">Server information disclosure aids attackers in crafting targeted exploits by revealing software versions and configurations.</div>
+<div class="evidence">Path: /nonexistent-page-test-12345, Status: 200, Errors: 1</div>
+<div class="remediation">Use custom error pages. Disable detailed error messages in production.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Data Exposure - x-powered-by Header</h3>
+<div class="desc">X-Powered-By header discloses server technology</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> x-powered-by</div>
+<div class="mi"><strong>CVSS:</strong> 2.5</div>
+<div class="mi"><strong>Confidence:</strong> 95%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">Express</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Header: x-powered-by: Express</div>
+<div class="remediation">Remove or obfuscate server version headers.</div>
+</div>
+<div class="vuln-card">
+<h3>Sensitive Data Exposure - server Header</h3>
+<div class="desc">Server header discloses software version</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> server</div>
+<div class="mi"><strong>CVSS:</strong> 2.5</div>
+<div class="mi"><strong>Confidence:</strong> 95%</div>
+<div class="mi"><strong>Module:</strong> sensitive</div>
+</div>
+<div class="payload-box">cloudflare</div>
+<div class="impact-box">Sensitive information (credentials, tokens, personal data) exposed, enabling further attacks and data breaches.</div>
+<div class="evidence">Header: server: cloudflare</div>
+<div class="remediation">Remove or obfuscate server version headers.</div>
+</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-info">
+INFO <span class="count">1</span></div>
+<div class="vuln-card">
+<h3>Missing Permissions-Policy Header</h3>
+<div class="desc">Permissions-Policy header is missing. Browser features are uncontrolled.</div>
+<div class="meta">
+<div class="mi"><strong>URL:</strong> https://www.kimi.com</div>
+<div class="mi"><strong>Parameter:</strong> Permissions-Policy</div>
+<div class="mi"><strong>CVSS:</strong> 0.0</div>
+<div class="mi"><strong>Confidence:</strong> 80%</div>
+<div class="mi"><strong>Module:</strong> headers</div>
+</div>
+<div class="payload-box">Missing</div>
+<div class="impact-box">Missing security headers expose users to clickjacking, MIME-type sniffing, and other client-side attacks.</div>
+<div class="evidence">Permissions-Policy header not present</div>
+<div class="remediation">Add Permissions-Policy header to restrict browser features.</div>
+</div>
+</div>
+<div class="footer">Generated by CyberSecurity Vulnerability Scanner Professional Edition &middot; Author: ARIF &middot; 2026-05-31 01:28:43</div>
+</div></body></html>

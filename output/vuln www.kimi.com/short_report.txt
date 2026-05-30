@@ -1,0 +1,845 @@
+======================================================================
+CYBERSECURITY : ARIF
+======================================================================
+  CYBERSECURITY VULNERABILITY SCANNER - SCAN REPORT
+======================================================================
+
+  Target:           https://www.kimi.com
+  Scan ID:          scan_1780165672
+  Date:             2026-05-31 01:27:52
+  Duration:         50.1 seconds
+  Total Requests:   18
+  Modules Ran:      18
+
+----------------------------------------------------------------------
+  VULNERABILITY SUMMARY
+----------------------------------------------------------------------
+  CRITICAL:  59
+  HIGH:      0
+  MEDIUM:    6
+  LOW:       8
+  INFO:      1
+  TOTAL:     74
+
+----------------------------------------------------------------------
+  DETAILED FINDINGS
+----------------------------------------------------------------------
+
+  [1] Weak TLS Protocol - TLSv1.0
+  --------------------------------------------------
+  Severity:   MEDIUM (CVSS: 6.0)
+  URL:        https://www.kimi.com
+  Parameter:  TLS Version
+  Payload:    TLSv1.0
+  Confidence: 95%
+  Module:     ssl
+  Evidence:   TLSv1.0 connection succeeded
+  Remediation: Disable TLSv1.0 on server. Use TLS 1.2 or TLS 1.3.
+
+  [2] Weak TLS Protocol - TLSv1.1
+  --------------------------------------------------
+  Severity:   MEDIUM (CVSS: 6.0)
+  URL:        https://www.kimi.com
+  Parameter:  TLS Version
+  Payload:    TLSv1.1
+  Confidence: 95%
+  Module:     ssl
+  Evidence:   TLSv1.1 connection succeeded
+  Remediation: Disable TLSv1.1 on server. Use TLS 1.2 or TLS 1.3.
+
+  [3] Cookie Security - SameSite=None
+  --------------------------------------------------
+  Severity:   MEDIUM (CVSS: 5.5)
+  URL:        https://www.kimi.com
+  Parameter:  Set-Cookie: __cf_bm
+  Payload:    Set-Cookie: __cf_bm=LIf89YbYCTiRh5RqfkRReFFFpSikrBf7yeuOiFHw1qQ-1780165673.2875037-1.0.1.1-LiADoWRIG
+  Confidence: 95%
+  Module:     cookie
+  Evidence:   Cookie flags: httponly, samesite=none, secure, path=/, domain=kimi.com, expires=sat, 30 may 2026 18:57:53 gmt
+  Remediation: Set the missing flag on cookie '__cf_bm'.
+
+  [4] Missing CSP Header
+  --------------------------------------------------
+  Severity:   MEDIUM (CVSS: 5.0)
+  URL:        https://www.kimi.com
+  Parameter:  Content-Security-Policy
+  Payload:    Missing
+  Confidence: 100%
+  Module:     headers
+  Evidence:   CSP header not present in response
+  Remediation: Implement Content-Security-Policy header with appropriate directives.
+
+  [5] Missing X-Frame-Options Header
+  --------------------------------------------------
+  Severity:   MEDIUM (CVSS: 4.3)
+  URL:        https://www.kimi.com
+  Parameter:  X-Frame-Options
+  Payload:    Missing
+  Confidence: 100%
+  Module:     headers
+  Evidence:   X-Frame-Options header not present
+  Remediation: Add 'X-Frame-Options: DENY' or 'X-Frame-Options: SAMEORIGIN' header.
+
+  [6] Missing X-XSS-Protection Header
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.5)
+  URL:        https://www.kimi.com
+  Parameter:  X-XSS-Protection
+  Payload:    Missing
+  Confidence: 80%
+  Module:     headers
+  Evidence:   X-XSS-Protection header not present
+  Remediation: Add 'X-XSS-Protection: 1; mode=block' header.
+
+  [7] Missing X-Content-Type-Options Header
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.5)
+  URL:        https://www.kimi.com
+  Parameter:  X-Content-Type-Options
+  Payload:    Missing
+  Confidence: 100%
+  Module:     headers
+  Evidence:   X-Content-Type-Options header not present
+  Remediation: Add 'X-Content-Type-Options: nosniff' header.
+
+  [8] Missing Referrer-Policy Header
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.0)
+  URL:        https://www.kimi.com
+  Parameter:  Referrer-Policy
+  Payload:    Missing
+  Confidence: 90%
+  Module:     headers
+  Evidence:   Referrer-Policy header not present
+  Remediation: Add 'Referrer-Policy: strict-origin-when-cross-origin' or similar.
+
+  [9] Missing Permissions-Policy Header
+  --------------------------------------------------
+  Severity:   INFO (CVSS: 0.0)
+  URL:        https://www.kimi.com
+  Parameter:  Permissions-Policy
+  Payload:    Missing
+  Confidence: 80%
+  Module:     headers
+  Evidence:   Permissions-Policy header not present
+  Remediation: Add Permissions-Policy header to restrict browser features.
+
+  [10] Server Information Disclosure
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.5)
+  URL:        https://www.kimi.com
+  Parameter:  Server
+  Payload:    cloudflare
+  Confidence: 100%
+  Module:     server
+  Evidence:   Server: cloudflare
+  Remediation: Hide or obfuscate server version in headers. Use generic server names.
+
+  [11] Technology Disclosure - x-powered-by
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.0)
+  URL:        https://www.kimi.com
+  Parameter:  x-powered-by
+  Payload:    Express
+  Confidence: 100%
+  Module:     server
+  Evidence:   x-powered-by: Express
+  Remediation: Remove or obfuscate technology-specific headers.
+
+  [12] Error Page Information Disclosure
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.5)
+  URL:        https://www.kimi.com/nonexistent-page-test-12345
+  Parameter:  /nonexistent-page-test-12345
+  Payload:    N/A
+  Confidence: 70%
+  Module:     server
+  Evidence:   Path: /nonexistent-page-test-12345, Status: 200, Errors: 1
+  Remediation: Use custom error pages. Disable detailed error messages in production.
+
+  [13] Sensitive Data Exposure - Phone Number
+  --------------------------------------------------
+  Severity:   MEDIUM (CVSS: 5.5)
+  URL:        https://www.kimi.com
+  Parameter:  HTML Content
+  Payload:    0 1024 1024
+  Confidence: 85%
+  Module:     sensitive
+  Evidence:   Pattern: \b(?:\+?[0-9]{1,3}[-. ]?)?\(?[...
+  Remediation: Remove sensitive data from client-side code. Use environment variables. Implement proper secrets management.
+
+  [14] Sensitive Data Exposure - x-powered-by Header
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.5)
+  URL:        https://www.kimi.com
+  Parameter:  x-powered-by
+  Payload:    Express
+  Confidence: 95%
+  Module:     sensitive
+  Evidence:   Header: x-powered-by: Express
+  Remediation: Remove or obfuscate server version headers.
+
+  [15] Sensitive Data Exposure - server Header
+  --------------------------------------------------
+  Severity:   LOW (CVSS: 2.5)
+  URL:        https://www.kimi.com
+  Parameter:  server
+  Payload:    cloudflare
+  Confidence: 95%
+  Module:     sensitive
+  Evidence:   Header: server: cloudflare
+  Remediation: Remove or obfuscate server version headers.
+
+  [16] Sensitive Endpoint Exposed - /.env
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.env
+  Parameter:  /.env
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.env. Remove from production or add authentication.
+
+  [17] Sensitive Endpoint Exposed - /.git/config
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.git/config
+  Parameter:  /.git/config
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.git/config. Remove from production or add authentication.
+
+  [18] Sensitive Endpoint Exposed - /.gitignore
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.gitignore
+  Parameter:  /.gitignore
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.gitignore. Remove from production or add authentication.
+
+  [19] Sensitive Endpoint Exposed - /.htaccess
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.htaccess
+  Parameter:  /.htaccess
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.htaccess. Remove from production or add authentication.
+
+  [20] Sensitive Endpoint Exposed - /config.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/config.php
+  Parameter:  /config.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /config.php. Remove from production or add authentication.
+
+  [21] Sensitive Endpoint Exposed - /config.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/config.json
+  Parameter:  /config.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /config.json. Remove from production or add authentication.
+
+  [22] Sensitive Endpoint Exposed - /config.yaml
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/config.yaml
+  Parameter:  /config.yaml
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /config.yaml. Remove from production or add authentication.
+
+  [23] Sensitive Endpoint Exposed - /config.yml
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/config.yml
+  Parameter:  /config.yml
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /config.yml. Remove from production or add authentication.
+
+  [24] Sensitive Endpoint Exposed - /configuration.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/configuration.php
+  Parameter:  /configuration.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /configuration.php. Remove from production or add authentication.
+
+  [25] Sensitive Endpoint Exposed - /database.yml
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/database.yml
+  Parameter:  /database.yml
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /database.yml. Remove from production or add authentication.
+
+  [26] Sensitive Endpoint Exposed - /db.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/db.php
+  Parameter:  /db.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /db.php. Remove from production or add authentication.
+
+  [27] Sensitive Endpoint Exposed - /backup.sql
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/backup.sql
+  Parameter:  /backup.sql
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /backup.sql. Remove from production or add authentication.
+
+  [28] Sensitive Endpoint Exposed - /dump.sql
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/dump.sql
+  Parameter:  /dump.sql
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /dump.sql. Remove from production or add authentication.
+
+  [29] Sensitive Endpoint Exposed - /dump.rdb
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/dump.rdb
+  Parameter:  /dump.rdb
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /dump.rdb. Remove from production or add authentication.
+
+  [30] Sensitive Endpoint Exposed - /crossdomain.xml
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/crossdomain.xml
+  Parameter:  /crossdomain.xml
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /crossdomain.xml. Remove from production or add authentication.
+
+  [31] Sensitive Endpoint Exposed - /clientaccesspolicy.xml
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/clientaccesspolicy.xml
+  Parameter:  /clientaccesspolicy.xml
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /clientaccesspolicy.xml. Remove from production or add authentication.
+
+  [32] Sensitive Endpoint Exposed - /wp-config.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/wp-config.php
+  Parameter:  /wp-config.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /wp-config.php. Remove from production or add authentication.
+
+  [33] Sensitive Endpoint Exposed - /wp-config.php.bak
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/wp-config.php.bak
+  Parameter:  /wp-config.php.bak
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /wp-config.php.bak. Remove from production or add authentication.
+
+  [34] Sensitive Endpoint Exposed - /wp-config.php.old
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/wp-config.php.old
+  Parameter:  /wp-config.php.old
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /wp-config.php.old. Remove from production or add authentication.
+
+  [35] Sensitive Endpoint Exposed - /web.config
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/web.config
+  Parameter:  /web.config
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /web.config. Remove from production or add authentication.
+
+  [36] Sensitive Endpoint Exposed - /app.config
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/app.config
+  Parameter:  /app.config
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /app.config. Remove from production or add authentication.
+
+  [37] Sensitive Endpoint Exposed - /application.properties
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/application.properties
+  Parameter:  /application.properties
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /application.properties. Remove from production or add authentication.
+
+  [38] Sensitive Endpoint Exposed - /docker-compose.yml
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/docker-compose.yml
+  Parameter:  /docker-compose.yml
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /docker-compose.yml. Remove from production or add authentication.
+
+  [39] Sensitive Endpoint Exposed - /Dockerfile
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/Dockerfile
+  Parameter:  /Dockerfile
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /Dockerfile. Remove from production or add authentication.
+
+  [40] Sensitive Endpoint Exposed - /kubeconfig
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/kubeconfig
+  Parameter:  /kubeconfig
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /kubeconfig. Remove from production or add authentication.
+
+  [41] Sensitive Endpoint Exposed - /.kube/config
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.kube/config
+  Parameter:  /.kube/config
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.kube/config. Remove from production or add authentication.
+
+  [42] Sensitive Endpoint Exposed - /composer.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/composer.json
+  Parameter:  /composer.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /composer.json. Remove from production or add authentication.
+
+  [43] Sensitive Endpoint Exposed - /composer.lock
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/composer.lock
+  Parameter:  /composer.lock
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /composer.lock. Remove from production or add authentication.
+
+  [44] Sensitive Endpoint Exposed - /package.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/package.json
+  Parameter:  /package.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /package.json. Remove from production or add authentication.
+
+  [45] Sensitive Endpoint Exposed - /yarn.lock
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/yarn.lock
+  Parameter:  /yarn.lock
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /yarn.lock. Remove from production or add authentication.
+
+  [46] Sensitive Endpoint Exposed - /npm-debug.log
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/npm-debug.log
+  Parameter:  /npm-debug.log
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /npm-debug.log. Remove from production or add authentication.
+
+  [47] Sensitive Endpoint Exposed - /debug.log
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/debug.log
+  Parameter:  /debug.log
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /debug.log. Remove from production or add authentication.
+
+  [48] Sensitive Endpoint Exposed - /error.log
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/error.log
+  Parameter:  /error.log
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /error.log. Remove from production or add authentication.
+
+  [49] Sensitive Endpoint Exposed - /access.log
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/access.log
+  Parameter:  /access.log
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /access.log. Remove from production or add authentication.
+
+  [50] Sensitive Endpoint Exposed - /credentials
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/credentials
+  Parameter:  /credentials
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /credentials. Remove from production or add authentication.
+
+  [51] Sensitive Endpoint Exposed - /credentials.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/credentials.json
+  Parameter:  /credentials.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /credentials.json. Remove from production or add authentication.
+
+  [52] Sensitive Endpoint Exposed - /key.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/key.json
+  Parameter:  /key.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /key.json. Remove from production or add authentication.
+
+  [53] Sensitive Endpoint Exposed - /service-account.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/service-account.json
+  Parameter:  /service-account.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /service-account.json. Remove from production or add authentication.
+
+  [54] Sensitive Endpoint Exposed - /phpinfo.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/phpinfo.php
+  Parameter:  /phpinfo.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /phpinfo.php. Remove from production or add authentication.
+
+  [55] Sensitive Endpoint Exposed - /info.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/info.php
+  Parameter:  /info.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /info.php. Remove from production or add authentication.
+
+  [56] Sensitive Endpoint Exposed - /test.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/test.php
+  Parameter:  /test.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /test.php. Remove from production or add authentication.
+
+  [57] Sensitive Endpoint Exposed - /admin.php
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/admin.php
+  Parameter:  /admin.php
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /admin.php. Remove from production or add authentication.
+
+  [58] Sensitive Endpoint Exposed - /swagger-ui.html
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/swagger-ui.html
+  Parameter:  /swagger-ui.html
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /swagger-ui.html. Remove from production or add authentication.
+
+  [59] Sensitive Endpoint Exposed - /.aws/credentials
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.aws/credentials
+  Parameter:  /.aws/credentials
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.aws/credentials. Remove from production or add authentication.
+
+  [60] Sensitive Endpoint Exposed - /.aws/config
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.aws/config
+  Parameter:  /.aws/config
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.aws/config. Remove from production or add authentication.
+
+  [61] Sensitive Endpoint Exposed - /.azure/credentials
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.azure/credentials
+  Parameter:  /.azure/credentials
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /.azure/credentials. Remove from production or add authentication.
+
+  [62] Sensitive Endpoint Exposed - /.npmrc
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.npmrc
+  Parameter:  /.npmrc
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /.npmrc. Remove from production or add authentication.
+
+  [63] Sensitive Endpoint Exposed - /.dockercfg
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.dockercfg
+  Parameter:  /.dockercfg
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /.dockercfg. Remove from production or add authentication.
+
+  [64] Sensitive Endpoint Exposed - /.docker/config.json
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/.docker/config.json
+  Parameter:  /.docker/config.json
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /.docker/config.json. Remove from production or add authentication.
+
+  [65] Sensitive Endpoint Exposed - /server-status
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/server-status
+  Parameter:  /server-status
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /server-status. Remove from production or add authentication.
+
+  [66] Sensitive Endpoint Exposed - /server-info
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/server-info
+  Parameter:  /server-info
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /server-info. Remove from production or add authentication.
+
+  [67] Sensitive Endpoint Exposed - /status
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/status
+  Parameter:  /status
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /status. Remove from production or add authentication.
+
+  [68] Sensitive Endpoint Exposed - /health
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/health
+  Parameter:  /health
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /health. Remove from production or add authentication.
+
+  [69] Sensitive Endpoint Exposed - /actuator
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/actuator
+  Parameter:  /actuator
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /actuator. Remove from production or add authentication.
+
+  [70] Sensitive Endpoint Exposed - /actuator/info
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/actuator/info
+  Parameter:  /actuator/info
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /actuator/info. Remove from production or add authentication.
+
+  [71] Sensitive Endpoint Exposed - /actuator/health
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/actuator/health
+  Parameter:  /actuator/health
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (53554 bytes)
+  Remediation: Restrict access to /actuator/health. Remove from production or add authentication.
+
+  [72] Sensitive Endpoint Exposed - /graphql
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/graphql
+  Parameter:  /graphql
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /graphql. Remove from production or add authentication.
+
+  [73] Sensitive Endpoint Exposed - /graphiql
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/graphiql
+  Parameter:  /graphiql
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /graphiql. Remove from production or add authentication.
+
+  [74] Sensitive Endpoint Exposed - /voyager
+  --------------------------------------------------
+  Severity:   CRITICAL (CVSS: 9.0)
+  URL:        https://www.kimi.com/voyager
+  Parameter:  /voyager
+  Payload:    N/A
+  Confidence: 90%
+  Module:     sensitive
+  Evidence:   Endpoint accessible, contains sensitive-looking data (52508 bytes)
+  Remediation: Restrict access to /voyager. Remove from production or add authentication.
+
+======================================================================
+  Generated by CyberSecurity Vulnerability Scanner | Author: ARIF
+  2026-05-31 01:28:43
+======================================================================

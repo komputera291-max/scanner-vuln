@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Scan Report - https://www.nasa.gov</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; background: #000; color: #e0e0e0; padding: 24px; }
+.container { max-width: 1280px; margin: 0 auto; }
+
+/* Header */
+.header { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 16px; padding: 36px 32px; margin-bottom: 28px; }
+.header h1 { color: #ffffff; font-size: 30px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+.header .sub { color: #666; font-size: 13px; margin-bottom: 8px; }
+.header .badge { display: inline-block; background: #111; border: 1px solid #222; border-radius: 6px; padding: 4px 12px; font-size: 12px; color: #888; margin-right: 8px; margin-top: 8px; }
+.header .badge span { color: #fff; }
+
+/* Summary Grid */
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
+.summary-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 24px; text-align: center; transition: border-color .2s; }
+.summary-card:hover { border-color: #333; }
+.summary-card .num { font-size: 38px; font-weight: 800; margin-bottom: 4px; letter-spacing: -1px; }
+.summary-card .lbl { color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.sc-critical .num { color: #ff002b; }
+.sc-high .num { color: #ff4d00; }
+.sc-medium .num { color: #ffaa00; }
+.sc-low .num { color: #00bfff; }
+.sc-info .num { color: #00ff88; }
+.sc-total .num { color: #ffffff; }
+
+/* Severity Sections */
+.severity-section { margin-bottom: 28px; }
+.severity-header { font-size: 18px; font-weight: 700; padding: 14px 20px; border-radius: 10px; margin-bottom: 12px; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+.severity-header .count { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2px 12px; font-size: 13px; font-weight: 600; }
+.sh-critical { background: #1a0508; color: #ff002b; border-left: 3px solid #ff002b; }
+.sh-high { background: #1a0a05; color: #ff4d00; border-left: 3px solid #ff4d00; }
+.sh-medium { background: #1a1200; color: #ffaa00; border-left: 3px solid #ffaa00; }
+.sh-low { background: #000a1a; color: #00bfff; border-left: 3px solid #00bfff; }
+.sh-info { background: #001a0a; color: #00ff88; border-left: 3px solid #00ff88; }
+
+/* Vuln Cards */
+.vuln-card { background: #080808; border: 1px solid #161616; border-radius: 12px; padding: 22px; margin-bottom: 10px; }
+.vuln-card h3 { color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.2px; }
+.vuln-card .desc { color: #888; font-size: 13px; margin-bottom: 14px; line-height: 1.5; }
+.vuln-card .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.vuln-card .mi { font-size: 12px; color: #999; }
+.vuln-card .mi strong { color: #555; font-weight: 500; }
+.vuln-card .mi code { background: #111; color: #aaa; padding: 1px 6px; border-radius: 3px; font-size: 11px; }
+.vuln-card .payload-box { background: #0d0000; border: 1px solid #2a0000; border-radius: 8px; padding: 14px; margin: 10px 0; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.7; overflow-x: auto; color: #ff6b6b; }
+.vuln-card .payload-box::before { content: "Payload"; display: block; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; color: #882222; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.vuln-card .impact-box { background: #000d08; border: 1px solid #002018; border-radius: 8px; padding: 14px; margin: 10px 0; font-size: 13px; line-height: 1.6; color: #88ddbb; }
+.vuln-card .impact-box::before { content: "Impact"; display: block; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; color: #226655; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.vuln-card .evidence { background: #050505; border: 1px solid #151515; border-radius: 6px; padding: 12px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; line-height: 1.6; overflow-x: auto; margin-top: 10px; color: #bbb; }
+.vuln-card .remediation { background: #001005; border: 1px solid #002010; border-radius: 6px; padding: 12px; margin-top: 10px; color: #00cc77; font-size: 13px; line-height: 1.5; }
+.vuln-card .remediation::before { content: "Remediation: "; font-weight: 600; }
+
+/* None found */
+.none-found { color: #444; font-style: italic; padding: 28px; text-align: center; font-size: 14px; background: #080808; border: 1px dashed #1a1a1a; border-radius: 10px; }
+
+/* Footer */
+.footer { text-align: center; color: #333; font-size: 12px; margin-top: 48px; padding: 24px; border-top: 1px solid #111; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  body { padding: 12px; }
+  .vuln-card .meta { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+}
+</style></head><body>
+<div class="container">
+<div class="header">
+<h1>Security Scan Report</h1>
+<div class="sub">Target: https://www.nasa.gov &middot; Scan ID: scan_1780165586</div>
+<div class="sub">Date: 2026-05-31 01:26:26 &middot; Duration: 15.8s &middot; Requests: 18</div>
+<div class="badge">Modules: <span>18</span></div>
+<div class="badge">Vulnerabilities: <span>0</span></div>
+</div>
+<div class="summary-grid">
+<div class="summary-card sc-total"><div class="num">0</div><div class="lbl">Total</div></div>
+<div class="summary-card sc-critical"><div class="num">0</div><div class="lbl">Critical</div></div>
+<div class="summary-card sc-high"><div class="num">0</div><div class="lbl">High</div></div>
+<div class="summary-card sc-medium"><div class="num">0</div><div class="lbl">Medium</div></div>
+<div class="summary-card sc-low"><div class="num">0</div><div class="lbl">Low</div></div>
+<div class="summary-card sc-info"><div class="num">0</div><div class="lbl">Info</div></div>
+</div>
+<div class="severity-section"><div class="severity-header sh-critical">
+CRITICAL <span class="count">0</span></div>
+<div class="none-found">No vulnerabilities found</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-high">
+HIGH <span class="count">0</span></div>
+<div class="none-found">No vulnerabilities found</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-medium">
+MEDIUM <span class="count">0</span></div>
+<div class="none-found">No vulnerabilities found</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-low">
+LOW <span class="count">0</span></div>
+<div class="none-found">No vulnerabilities found</div>
+</div>
+<div class="severity-section"><div class="severity-header sh-info">
+INFO <span class="count">0</span></div>
+<div class="none-found">No vulnerabilities found</div>
+</div>
+<div class="footer">Generated by CyberSecurity Vulnerability Scanner Professional Edition &middot; Author: ARIF &middot; 2026-05-31 01:26:42</div>
+</div></body></html>

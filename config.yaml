@@ -1,0 +1,76 @@
+# Konfigurasi CyberSecurity Scanner Professional Edition
+scanner:
+  name: "CyberSecurity Vulnerability Scanner"
+  version: "3.0.0"
+  author: "ARIF"
+  description: "Professional Web Vulnerability Scanner Toolkit"
+
+requests:
+  timeout: 30
+  max_retries: 3
+  delay: 0.5
+  user_agent_rotation: true
+  proxy_rotation: false
+  proxy_list: []
+  max_redirects: 5
+  verify_ssl: true
+  allow_cookies: true
+
+threading:
+  max_threads: 20
+  max_connections: 50
+  rate_limit: 100
+  rate_limit_period: 60
+
+scanning:
+  default_modules: ["sqli", "xss", "lfi", "cmdi", "ssrf", "ssti", "xxe", "csrf",
+                    "redirect", "upload", "idor", "auth", "sensitive", "cors",
+                    "headers", "cookie", "server", "ssl"]
+  depth: 3
+  max_urls: 1000
+  follow_subdomains: false
+  crawl_dynamic: false
+  max_scan_time: 3600
+
+payload_generation:
+  enabled: true
+  max_payloads_per_test: 500
+  enable_mutations: true
+  enable_encodings: true
+  enable_context_adapt: true
+  mutation_depth: 3
+  encoding_chain_depth: 2
+  smart_sampling: true
+  sampling_rate: 0.1
+
+reporting:
+  formats: ["html", "json", "txt"]
+  include_screenshots: false
+  include_raw_requests: true
+  include_remediation: true
+  include_cvss: true
+  compress_output: false
+  output_dir: "output"
+
+logging:
+  level: "INFO"
+  log_to_file: true
+  log_dir: "logs"
+  verbose: false
+
+proxy:
+  enabled: false
+  protocol: "socks5"
+  host: ""
+  port: 0
+  username: ""
+  password: ""
+  rotation_interval: 300
+
+out_of_band:
+  enabled: true
+  callback_server: false
+  callback_port: 8888
+  callback_domain: ""
+  dns_callback: false
+  http_callback: true

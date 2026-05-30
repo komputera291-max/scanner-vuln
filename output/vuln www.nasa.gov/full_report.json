@@ -1,0 +1,47 @@
+{
+  "target": "https://www.nasa.gov",
+  "scan_id": "scan_1780165586",
+  "start_time": 1780165586.7172763,
+  "end_time": 1780165602.5531347,
+  "duration": 15.835858345031738,
+  "total_requests": 18,
+  "vulnerabilities": [],
+  "modules_ran": [
+    "ssl",
+    "lfi",
+    "xss",
+    "sqli",
+    "upload",
+    "idor",
+    "cmdi",
+    "headers",
+    "auth",
+    "xxe",
+    "ssrf",
+    "redirect",
+    "csrf",
+    "server",
+    "cookie",
+    "ssti",
+    "sensitive",
+    "cors"
+  ],
+  "errors": [],
+  "summary": {
+    "target": "https://www.nasa.gov",
+    "scan_id": "scan_1780165586",
+    "duration": 15.835858345031738,
+    "total_requests": 18,
+    "total_vulnerabilities": 0,
+    "vulnerabilities_by_severity": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "MEDIUM": 0,
+      "LOW": 0,
+      "INFO": 0,
+      "total": 0
+    },
+    "modules_executed": 18,
+    "errors": 0
+  }
+}
