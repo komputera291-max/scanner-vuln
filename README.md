@@ -11,7 +11,7 @@
 Clone & run dalam 10 detik:
 
 ```bash
-git clone https://github.com/komputera291-max/scanner-vuln.git
+git clone https://github.com/Arif-cyber404/scanner-vuln.git
 cd scanner-vuln
 pip3 install -r requirements.txt
 python3 scanner.py
